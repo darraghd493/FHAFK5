@@ -208,7 +208,7 @@ namespace FHAFK5
         {
             if (mouseButton.Checked == true)
             {
-                if (!alertedMouse && bypass)
+                if (!alertedMouse)
                 {
                     MessageBox.Show("This (mouse mode) will not automatically drive forward.");
                     alertedMouse = true;
