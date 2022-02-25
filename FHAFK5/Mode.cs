@@ -7,6 +7,7 @@
     {
         GAMEPAD = 0,
         KEYBOARD = 1,
-        MOUSE = 2
+        MOUSE = 2,
+        KEYBOARDMOUSE = 3
     }
 }

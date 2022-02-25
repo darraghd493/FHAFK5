@@ -45,6 +45,8 @@ namespace FHAFK5
             this.timerSpeed = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.bypassCheckbox = new System.Windows.Forms.CheckBox();
+            this.keyboadMouseButton = new System.Windows.Forms.RadioButton();
             this.dragPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timerSpeed)).BeginInit();
             this.SuspendLayout();
@@ -130,9 +132,9 @@ namespace FHAFK5
             this.mouseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.mouseButton.Location = new System.Drawing.Point(15, 138);
             this.mouseButton.Name = "mouseButton";
-            this.mouseButton.Size = new System.Drawing.Size(91, 17);
+            this.mouseButton.Size = new System.Drawing.Size(57, 17);
             this.mouseButton.TabIndex = 2;
-            this.mouseButton.Text = "Mouse Button";
+            this.mouseButton.Text = "Mouse";
             this.mouseButton.UseVisualStyleBackColor = true;
             this.mouseButton.CheckedChanged += new System.EventHandler(this.mouseButton_CheckedChanged);
             // 
@@ -142,9 +144,9 @@ namespace FHAFK5
             this.keyboardButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.keyboardButton.Location = new System.Drawing.Point(15, 115);
             this.keyboardButton.Name = "keyboardButton";
-            this.keyboardButton.Size = new System.Drawing.Size(104, 17);
+            this.keyboardButton.Size = new System.Drawing.Size(70, 17);
             this.keyboardButton.TabIndex = 3;
-            this.keyboardButton.Text = "Keyboard Button";
+            this.keyboardButton.Text = "Keyboard";
             this.keyboardButton.UseVisualStyleBackColor = true;
             this.keyboardButton.CheckedChanged += new System.EventHandler(this.keyboardButton_CheckedChanged);
             // 
@@ -154,15 +156,15 @@ namespace FHAFK5
             this.gamepadButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
             this.gamepadButton.Location = new System.Drawing.Point(15, 92);
             this.gamepadButton.Name = "gamepadButton";
-            this.gamepadButton.Size = new System.Drawing.Size(105, 17);
+            this.gamepadButton.Size = new System.Drawing.Size(71, 17);
             this.gamepadButton.TabIndex = 4;
-            this.gamepadButton.Text = "Gamepad Button";
+            this.gamepadButton.Text = "Gamepad";
             this.gamepadButton.UseVisualStyleBackColor = true;
             this.gamepadButton.CheckedChanged += new System.EventHandler(this.gamepadButton_CheckedChanged);
             // 
             // infoBar
             // 
-            this.infoBar.Location = new System.Drawing.Point(15, 203);
+            this.infoBar.Location = new System.Drawing.Point(12, 252);
             this.infoBar.Name = "infoBar";
             this.infoBar.Size = new System.Drawing.Size(307, 23);
             this.infoBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -199,9 +201,14 @@ namespace FHAFK5
             // timerSpeed
             // 
             this.timerSpeed.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.timerSpeed.Location = new System.Drawing.Point(15, 177);
+            this.timerSpeed.Location = new System.Drawing.Point(12, 226);
             this.timerSpeed.Maximum = new decimal(new int[] {
             5000,
+            0,
+            0,
+            0});
+            this.timerSpeed.Minimum = new decimal(new int[] {
+            10,
             0,
             0,
             0});
@@ -223,12 +230,38 @@ namespace FHAFK5
             this.panel1.Size = new System.Drawing.Size(335, 10);
             this.panel1.TabIndex = 9;
             // 
+            // bypassCheckbox
+            // 
+            this.bypassCheckbox.AutoSize = true;
+            this.bypassCheckbox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.bypassCheckbox.Location = new System.Drawing.Point(12, 203);
+            this.bypassCheckbox.Name = "bypassCheckbox";
+            this.bypassCheckbox.Size = new System.Drawing.Size(60, 17);
+            this.bypassCheckbox.TabIndex = 10;
+            this.bypassCheckbox.Text = "Bypass";
+            this.bypassCheckbox.UseVisualStyleBackColor = true;
+            this.bypassCheckbox.CheckedChanged += new System.EventHandler(this.bypassCheckbox_CheckedChanged);
+            // 
+            // keyboadMouseButton
+            // 
+            this.keyboadMouseButton.AutoSize = true;
+            this.keyboadMouseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
+            this.keyboadMouseButton.Location = new System.Drawing.Point(15, 161);
+            this.keyboadMouseButton.Name = "keyboadMouseButton";
+            this.keyboadMouseButton.Size = new System.Drawing.Size(126, 17);
+            this.keyboadMouseButton.TabIndex = 11;
+            this.keyboadMouseButton.Text = "Keyboard and Mouse";
+            this.keyboadMouseButton.UseVisualStyleBackColor = true;
+            this.keyboadMouseButton.CheckedChanged += new System.EventHandler(this.keyboadMouseButton_CheckedChanged);
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(12)))), ((int)(((byte)(18)))));
-            this.ClientSize = new System.Drawing.Size(335, 237);
+            this.ClientSize = new System.Drawing.Size(335, 285);
+            this.Controls.Add(this.keyboadMouseButton);
+            this.Controls.Add(this.bypassCheckbox);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.timerSpeed);
             this.Controls.Add(this.stop);
@@ -273,6 +306,8 @@ namespace FHAFK5
         private System.Windows.Forms.NumericUpDown timerSpeed;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox bypassCheckbox;
+        private System.Windows.Forms.RadioButton keyboadMouseButton;
     }
 }
 

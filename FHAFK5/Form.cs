@@ -21,6 +21,7 @@ namespace FHAFK5
         private Point mouse = new Point(0, 0);
         private IKeyboardMouseEvents globalHook;
         private RandomInt randomInt = new RandomInt();
+        private bool bypass = true;
 
         /// <summary>
         /// Initializes and prepares the form, sets up toggle keybind.
@@ -33,9 +34,14 @@ namespace FHAFK5
             // Set title
             this.title.Text = this.Text;
 
+            // Set bypass
+            bypass = this.bypassCheckbox.Checked;
+
             // Set mode - Switch is not appropriate for this activity as it is going through 3 buttons and checking values and setting the mode to
             if (gamepadButton.Checked) 
                 mode = Mode.GAMEPAD;
+            else if (keyboadMouseButton.Checked)
+                mode = Mode.KEYBOARDMOUSE;
             else if (keyboardButton.Checked) 
                 mode = Mode.KEYBOARD;
             else if (mouseButton.Checked) 
@@ -46,6 +52,18 @@ namespace FHAFK5
             // Set buttons
             redrawButtons();
             redrawEnabled();
+
+            // Fix buttons to bypass
+            if ((mouseButton.Checked || keyboadMouseButton.Checked) && !bypass)
+            {
+                gamepadButton.Checked = true;
+                keyboardButton.Checked = false;
+                mouseButton.Checked = false;
+                keyboadMouseButton.Checked = false;
+                mode = Mode.GAMEPAD;
+            }
+            mouseButton.Enabled = bypass;
+            keyboadMouseButton.Enabled = bypass;
 
             // Set up keybind
             globalHook = Hook.GlobalEvents();
@@ -126,16 +144,25 @@ namespace FHAFK5
                     gamepadButton.Checked = true;
                     keyboardButton.Checked = false;
                     mouseButton.Checked = false;
+                    keyboadMouseButton.Checked = false;
                     break;
                 case Mode.KEYBOARD:
                     gamepadButton.Checked = false;
                     keyboardButton.Checked = true;
                     mouseButton.Checked = false;
+                    keyboadMouseButton.Checked = false;
                     break;
                 case Mode.MOUSE:
                     gamepadButton.Checked = false;
                     keyboardButton.Checked = false;
                     mouseButton.Checked = true;
+                    keyboadMouseButton.Checked = false;
+                    break;
+                case Mode.KEYBOARDMOUSE:
+                    gamepadButton.Checked = false;
+                    keyboardButton.Checked = false;
+                    mouseButton.Checked = false;
+                    keyboadMouseButton.Checked = true;
                     break;
             }
 
@@ -149,17 +176,10 @@ namespace FHAFK5
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private bool alertedGamepad = false;
         private void gamepadButton_CheckedChanged(object sender, EventArgs e)
         {
             if (gamepadButton.Checked == true)
             {
-                if (!alertedGamepad)
-                {
-                    MessageBox.Show("This (gamepad mode) is a work in progress (beta) and may not work.");
-                    alertedGamepad = true;
-                }
-
                 mode = Mode.GAMEPAD;
                 redrawButtons();
             }
@@ -170,18 +190,11 @@ namespace FHAFK5
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private bool alertedKeyboard = false;
         private void keyboardButton_CheckedChanged(object sender, EventArgs e)
         {
             if (keyboardButton.Checked == true)
             {
-                if (!alertedKeyboard)
-                {
-                    MessageBox.Show("This (keyboard mode) may interfer with driving.");
-                    alertedKeyboard = true;
-                }
-
-                mode = Mode.KEYBOARD;
+               mode = Mode.KEYBOARD;
                 redrawButtons();
             }
         }
@@ -196,15 +209,52 @@ namespace FHAFK5
         {
             if (mouseButton.Checked == true)
             {
-                if (!alertedMouse)
+                if (!alertedMouse && bypass)
                 {
-                    MessageBox.Show("This (mouse mode) will not automatically drive forward. This is also a work in progress (beta) and may not work.");
+                    MessageBox.Show("This (mouse mode) will not automatically drive forward.");
                     alertedMouse = true;
                 }
 
                 mode = Mode.MOUSE;
                 redrawButtons();
             }
+        }
+
+        /// <summary>
+        /// Called on keyboadMouseButton checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void keyboadMouseButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (keyboadMouseButton.Checked == true)
+            {
+                mode = Mode.KEYBOARDMOUSE;
+                redrawButtons();
+            }
+        }
+
+        /// <summary>
+        /// Called on bypassCheckbox checked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bypassCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            // Set bypass
+            bypass = bypassCheckbox.Checked;
+
+            // Prevent mouse
+            if ((mouseButton.Checked || keyboadMouseButton.Checked) && !bypass)
+            {
+                gamepadButton.Checked = true;
+                keyboardButton.Checked = false;
+                mouseButton.Checked = false;
+                keyboadMouseButton.Checked = false;
+                mode = Mode.GAMEPAD;
+            }
+            mouseButton.Enabled = bypass;
+            keyboadMouseButton.Enabled = bypass;
         }
 
         // Drag form functions
@@ -407,6 +457,11 @@ namespace FHAFK5
                         functionThread = new Thread(mouseFunction);
                         functionThread.Start();
                         break;
+                    case Mode.KEYBOARDMOUSE:
+                        // Create and launch keyboard mouse function thread
+                        functionThread = new Thread(keyboardMouseFunction);
+                        functionThread.Start();
+                        break;
                 }
 
                 // Set the infobar to 100
@@ -428,11 +483,19 @@ namespace FHAFK5
         /// </summary>
         private void gamepadFunction()
         {
-            // Drive forward - hold right trigger (490ms)
-            gamePad.Use(GamePadControl.RightTrigger, gamepadIndex, 490); 
 
-            // Anti-afk - click the left stick (10ms)
-            gamePad.Use(GamePadControl.LeftStickClick, gamepadIndex, 10);
+            if (bypass)
+            {
+                // Drive forward - hold right trigger (490ms)
+                gamePad.Use(GamePadControl.RightTrigger, gamepadIndex, (int)timerSpeed.Value - 10);
+
+                // Anti-afk - click the left stick (10ms)
+                gamePad.Use(GamePadControl.LeftStickClick, gamepadIndex, 10);
+            } else
+            {
+                // Drive forward - hold right trigger (490ms)
+                gamePad.Use(GamePadControl.RightTrigger, gamepadIndex, (int)timerSpeed.Value);
+            }
 
             return;
         }
@@ -446,12 +509,15 @@ namespace FHAFK5
             // Drive forward - push down W
             SimKeyboard.KeyDown((byte)87); // 65 is keycode for W
 
-            // Anti-afk - press A and D to turn the car
-            if (keyPressSide)
-                SimKeyboard.Press((byte)65, 10); // 65 is keycode for A
-            else 
-                SimKeyboard.Press((byte)68, 10); // 68 is keycode for D
-            keyPressSide = !keyPressSide;
+            if (bypass)
+            {
+                // Anti-afk - press A and D to turn the car
+                if (keyPressSide)
+                    SimKeyboard.Press((byte)65, 10); // 65 is keycode for A
+                else
+                    SimKeyboard.Press((byte)68, 10); // 68 is keycode for D
+                keyPressSide = !keyPressSide;
+            }
 
             return;
         }
@@ -461,6 +527,30 @@ namespace FHAFK5
         /// </summary>
         private void mouseFunction()
         {
+            // Anti-afk - randomize mouse movement (12 pixels)
+            SimMouse.Act(SimMouse.Action.RightButtonDown, mouse.X, mouse.Y);
+            SimMouse.Act(SimMouse.Action.MoveOnly, mouse.X + randomInt.randomInt(-12, 12), mouse.Y + randomInt.randomInt(-12, 12));
+            SimMouse.Act(SimMouse.Action.RightButtonUp, mouse.X, mouse.Y);
+
+            return;
+        }
+
+        /// <summary>
+        /// Anti-afk for keyboard and mouse.
+        /// </summary>
+        private bool kmKeyPressSide = false; // True = A, false = D
+        private void keyboardMouseFunction()
+        {
+            // Drive forward - push down W
+            SimKeyboard.KeyDown((byte)87); // 65 is keycode for W
+
+            // Anti-afk - press A and D to turn the car
+            if (kmKeyPressSide)
+                SimKeyboard.Press((byte)65, 10); // 65 is keycode for A
+            else
+                SimKeyboard.Press((byte)68, 10); // 68 is keycode for D
+            kmKeyPressSide = !kmKeyPressSide;
+
             // Anti-afk - randomize mouse movement (12 pixels)
             SimMouse.Act(SimMouse.Action.RightButtonDown, mouse.X, mouse.Y);
             SimMouse.Act(SimMouse.Action.MoveOnly, mouse.X + randomInt.randomInt(-12, 12), mouse.Y + randomInt.randomInt(-12, 12));
