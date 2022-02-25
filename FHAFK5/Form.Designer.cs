@@ -208,7 +208,7 @@ namespace FHAFK5
             0,
             0});
             this.timerSpeed.Minimum = new decimal(new int[] {
-            10,
+            25,
             0,
             0,
             0});
