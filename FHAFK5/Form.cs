@@ -1,4 +1,4 @@
-﻿using Gma.System.MouseKeyHook;
+using Gma.System.MouseKeyHook;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -63,7 +63,6 @@ namespace FHAFK5
                 mode = Mode.GAMEPAD;
             }
             mouseButton.Enabled = bypass;
-            keyboadMouseButton.Enabled = bypass;
 
             // Set up keybind
             globalHook = Hook.GlobalEvents();
@@ -254,7 +253,6 @@ namespace FHAFK5
                 mode = Mode.GAMEPAD;
             }
             mouseButton.Enabled = bypass;
-            keyboadMouseButton.Enabled = bypass;
         }
 
         // Drag form functions
@@ -538,23 +536,18 @@ namespace FHAFK5
         /// <summary>
         /// Anti-afk for keyboard and mouse.
         /// </summary>
-        private bool kmKeyPressSide = false; // True = A, false = D
         private void keyboardMouseFunction()
         {
             // Drive forward - push down W
             SimKeyboard.KeyDown((byte)87); // 65 is keycode for W
 
-            // Anti-afk - press A and D to turn the car
-            if (kmKeyPressSide)
-                SimKeyboard.Press((byte)65, 10); // 65 is keycode for A
-            else
-                SimKeyboard.Press((byte)68, 10); // 68 is keycode for D
-            kmKeyPressSide = !kmKeyPressSide;
-
-            // Anti-afk - randomize mouse movement (12 pixels)
-            SimMouse.Act(SimMouse.Action.RightButtonDown, mouse.X, mouse.Y);
-            SimMouse.Act(SimMouse.Action.MoveOnly, mouse.X + randomInt.randomInt(-12, 12), mouse.Y + randomInt.randomInt(-12, 12));
-            SimMouse.Act(SimMouse.Action.RightButtonUp, mouse.X, mouse.Y);
+            if (bypass)
+            {
+                // Anti-afk - randomize mouse movement (12 pixels)
+                SimMouse.Act(SimMouse.Action.RightButtonDown, mouse.X, mouse.Y);
+                SimMouse.Act(SimMouse.Action.MoveOnly, mouse.X + randomInt.randomInt(-12, 12), mouse.Y + randomInt.randomInt(-12, 12));
+                SimMouse.Act(SimMouse.Action.RightButtonUp, mouse.X, mouse.Y);
+            }
 
             return;
         }
