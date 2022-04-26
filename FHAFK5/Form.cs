@@ -1,4 +1,4 @@
-﻿using Gma.System.MouseKeyHook;
+using Gma.System.MouseKeyHook;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -538,16 +538,9 @@ namespace FHAFK5
         /// </summary>
         private void keyboardMouseFunction()
         {
-            // Drive forward - push down W
-            SimKeyboard.KeyDown((byte)87); // 65 is keycode for W
-
-            if (bypass)
-            {
-                // Anti-afk - randomize mouse movement (12 pixels)
-                SimMouse.Act(SimMouse.Action.RightButtonDown, mouse.X, mouse.Y);
-                SimMouse.Act(SimMouse.Action.MoveOnly, mouse.X + randomInt.randomInt(-12, 12), mouse.Y + randomInt.randomInt(-12, 12));
-                SimMouse.Act(SimMouse.Action.RightButtonUp, mouse.X, mouse.Y);
-            }
+            // Execute both keyboard and mouse functions
+            keyboardFunction();
+            mouseFunction();
 
             return;
         }
