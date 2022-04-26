@@ -252,7 +252,9 @@ namespace FHAFK5
                 keyboadMouseButton.Checked = false;
                 mode = Mode.GAMEPAD;
             }
+            
             mouseButton.Enabled = bypass;
+            keyboadMouseButton.Enabled = bypass;
         }
 
         // Drag form functions
@@ -295,41 +297,81 @@ namespace FHAFK5
             }
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dragPanel_MouseDown(object sender, MouseEventArgs e)
         {
             onMouseDown(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dragPanel_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dragPanel_MouseMove(object sender, MouseEventArgs e)
         {
             onMouseMove(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void title_MouseDown(object sender, MouseEventArgs e)
         {
             onMouseDown(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void title_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void title_MouseMove(object sender, MouseEventArgs e)
         {
             onMouseMove(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void minimize_MouseDown(object sender, MouseEventArgs e)
         {
             onMouseDown(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void minimize_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
@@ -340,16 +382,31 @@ namespace FHAFK5
             onMouseMove(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void close_MouseDown(object sender, MouseEventArgs e)
         {
             onMouseDown(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void close_MouseUp(object sender, MouseEventArgs e)
         {
             onMouseUp(e);
         }
 
+        /// <summary>
+        /// Drag controller.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void close_MouseMove(object sender, MouseEventArgs e)
         {
             onMouseMove(e);
