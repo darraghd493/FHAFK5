@@ -53,16 +53,8 @@ namespace FHAFK5
             redrawButtons();
             redrawEnabled();
 
-            // Fix buttons to bypass
-            if ((mouseButton.Checked || keyboadMouseButton.Checked) && !bypass)
-            {
-                gamepadButton.Checked = true;
-                keyboardButton.Checked = false;
-                mouseButton.Checked = false;
-                keyboadMouseButton.Checked = false;
-                mode = Mode.GAMEPAD;
-            }
-            mouseButton.Enabled = bypass;
+            // Fix buttons for bypass mode
+            updateRequiredBypassToggles();
 
             // Set up keybind
             globalHook = Hook.GlobalEvents();
@@ -170,6 +162,22 @@ namespace FHAFK5
             paused = false;
         }
 
+        private void updateRequiredBypassToggles()
+        {
+            // Prevent mouse
+            if ((mouseButton.Checked || keyboadMouseButton.Checked) && !bypass)
+            {
+                gamepadButton.Checked = true;
+                keyboardButton.Checked = false;
+                mouseButton.Checked = false;
+                keyboadMouseButton.Checked = false;
+                mode = Mode.GAMEPAD;
+            }
+
+            mouseButton.Enabled = bypass;
+            keyboadMouseButton.Enabled = bypass;
+        }
+
         /// <summary>
         /// Called on gamepadButton checked.
         /// </summary>
@@ -244,17 +252,7 @@ namespace FHAFK5
             bypass = bypassCheckbox.Checked;
 
             // Prevent mouse
-            if ((mouseButton.Checked || keyboadMouseButton.Checked) && !bypass)
-            {
-                gamepadButton.Checked = true;
-                keyboardButton.Checked = false;
-                mouseButton.Checked = false;
-                keyboadMouseButton.Checked = false;
-                mode = Mode.GAMEPAD;
-            }
-            
-            mouseButton.Enabled = bypass;
-            keyboadMouseButton.Enabled = bypass;
+            updateRequiredBypassToggles();
         }
 
         // Drag form functions
