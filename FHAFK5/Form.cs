@@ -162,6 +162,9 @@ namespace FHAFK5
             paused = false;
         }
 
+        /// <summary>
+        /// Called to toggle the availbiity of mouse and keyboardMouse modes.
+        /// </summary>
         private void updateRequiredBypassToggles()
         {
             // Prevent mouse
